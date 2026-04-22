@@ -216,7 +216,11 @@ __marimo__/
 .streamlit/secrets.toml
 
 user-password.py
-user-config.py
+user_password.py
 throttle.ctrl
 pywikibot-SnowyBot.lwp
 /apicache
+user-config.py
+
+reminders.db
+last_notif_id.txt
