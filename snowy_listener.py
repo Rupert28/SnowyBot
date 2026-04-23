@@ -120,5 +120,5 @@ if __name__ == "__main__":
             print(f"MAIN LOOP FATAL: {e}")
         
         time.sleep(60)
-        now_str = datetime.datetime.now(timezone.utc).strftime('%H:%M:%S')
+        now_str = datetime.now(timezone.utc).strftime('%H:%M:%S')
         print(f"[{now_str} UTC] Sleeping for 60 seconds...")
