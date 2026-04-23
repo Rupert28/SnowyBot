@@ -58,7 +58,7 @@ def send_reminders():
             # Format wikitext
             ping_text = f"[[User:{user}|{user}]]" if is_subpage else f"{user}"
             reminder_wikitext = (
-                f"\n== Reminder from SnowyBot ==\n"
+                f"\n\n== Reminder from SnowyBot ==\n\n"
                 f"Hi {ping_text}, here's your reminder you requested on [[{origin}]]: ''{msg}'' ~~~~"
             )
             
