@@ -1,6 +1,5 @@
 import sqlite3
 import os
-import dateparser
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_NAME = os.path.join(BASE_DIR, "reminders.db")
@@ -16,26 +15,30 @@ def init_db():
             reminder_text TEXT,
             due_date DATETIME,
             target_page TEXT,
-            revid INTEGER
+            revid INTEGER,
+            origin_page TEXT,
+            status TEXT DEFAULT 'pending'
         )
     ''')
     conn.commit()
     conn.close()
-    print("LOG: Database initialized with target_page support.")
+    print("LOG: Database initialized.")
 
 def add_reminder_if_new(username, due_date, message, revid, page_title, target_param=None):
-    # Default to 'talk' if the user didn't specify a 3rd parameter
+    
     target = target_param.strip().lower() if target_param else 'talk'
     
-    fingerprint = f"{username}|{message}|{page_title}".lower().strip()
+    
+    fingerprint = f"{username}|{message}|{page_title}|{revid}".lower().strip()
     
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     try:
+        
         cursor.execute('''
-            INSERT INTO reminders (fingerprint, username, due_date, reminder_text, target_page, revid)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (fingerprint, username, due_date.isoformat(), message, target, revid))
+            INSERT INTO reminders (fingerprint, username, due_date, reminder_text, target_page, revid, origin_page)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (fingerprint, username, due_date.isoformat(), message, target, revid, page_title))
         conn.commit()
         return True
     except sqlite3.IntegrityError:

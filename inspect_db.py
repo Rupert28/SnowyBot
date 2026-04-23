@@ -11,15 +11,15 @@ def inspect_database():
         
         try:
             # Added rev_id to the query
-            cursor.execute("SELECT id, username, due_date, reminder_text FROM reminders")
+            cursor.execute("SELECT id, username, due_date, reminder_text, target_page, origin_page, status FROM reminders")
             rows = cursor.fetchall()
             
             # Adjusted header to include RevID
-            print(f"{'ID':<3} | {'User':<15} | {'Due Date':<20} | {'Message':<30}")
-            print("-" * 70)
+            print(f"{'ID':<3} | {'User':<15} | {'Due Date':<20} | {'Message':<30} | {'Target Page':<20} | {'Origin Page':<20} | {'Status':<10}")
+            print("-" * 120)
             
             for row in rows:
-                print(f"{row['id']:<3} | {row['username']:<15} | {row['due_date']:<20} | {row['reminder_text']:<30}")
+                print(f"{row['id']:<3} | {row['username']:<15} | {row['due_date']:<20} | {row['reminder_text']:<30} | {row['target_page']:<20} | {row['origin_page']:<20} | {row['status']:<10}")
                 print()
                 
         except sqlite3.OperationalError as e:
