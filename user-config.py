@@ -1,11 +1,13 @@
 import os
 
 family = 'wikipedia'
-
 mylang = 'en'
 
-usernames['wikipedia']['en'] = 'SnowyBot'
+usernames['wikipedia']['en'] = os.getenv('PWB_USERNAME')
 
-_pass = os.getenv('SNOWY_PASS', '')
-if _pass:
-    os.environ['PYWIKIBOT_PASSWORD'] = f"('SnowyBot', BotPassword('Task_1', '{_pass}'))"
+authenticate['en.wikipedia.org'] = (
+    os.getenv('PWB_CONSUMER_TOKEN'),
+    os.getenv('PWB_CONSUMER_SECRET'),
+    os.getenv('PWB_ACCESS_TOKEN'),
+    os.getenv('PWB_ACCESS_SECRET')
+)
