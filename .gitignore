@@ -220,7 +220,6 @@ user_password.py
 throttle.ctrl
 pywikibot-SnowyBot.lwp
 /apicache
-user-config.py
 
 reminders.db
 last_notif_id.txt
