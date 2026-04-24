@@ -1,5 +1,8 @@
 import os
 
+usernames = {}
+authenticate = {}
+
 family = 'wikipedia'
 mylang = 'en'
 
