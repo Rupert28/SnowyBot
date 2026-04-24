@@ -57,12 +57,18 @@ def send_reminders():
             
             # Format wikitext
             ping_text = f"[[User:{user}|{user}]]" if is_subpage else f"{user}"
-            reminder_wikitext = (
-                f"\n\n== Reminder from SnowyBot ==\n\n"
-                f"Hi {ping_text}, here's your reminder you requested on [[{origin}]]: ''{msg}'' ~~~~"
-            )
+
+            reminder_wikitext = f"""
+
+== Reminder from SnowyBot ==
+
+[[File:Alarm Clock Vector (cropped).svg|50px|left]]
+Hi {ping_text}, here's your reminder you requested on [[{origin}]]: ''{msg}''.
+
+''Set and don't forget with a reminder from'' ~~~~
+"""
             
-            # Save the edit with a clear summary
+            # Save the edit
             dest_page.text += reminder_wikitext
             dest_page.save(summary=f"Delivering requested reminder")
             
@@ -85,6 +91,6 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"MAIN SENDER LOOP ERROR: {e}")
             
-        time.sleep(60) 
+        time.sleep(180) 
         now_str = datetime.datetime.now(timezone.utc).strftime('%H:%M:%S')
-        print(f"[{now_str} UTC] Sleeping for 60 seconds...")
+        print(f"[{now_str} UTC] Sleeping for 180 seconds...")
