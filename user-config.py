@@ -1,7 +1,9 @@
 import os
 
-usernames = {}
-authenticate = {}
+if 'usernames' not in globals():
+    usernames = {}
+if 'authenticate' not in globals():
+    authenticate = {}
 
 family = 'wikipedia'
 mylang = 'en'
