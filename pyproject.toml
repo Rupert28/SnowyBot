@@ -12,6 +12,7 @@ dependencies = [
     "requests-oauthlib>=2.0.0",
     "mwparserfromhell>=0.7.2",
     "dateparser>=1.2.0",
+    "python-dotenv",
     "pytz",
     "python-dateutil"
 ]

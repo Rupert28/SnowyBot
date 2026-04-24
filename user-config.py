@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 if 'usernames' not in globals():
     usernames = {}

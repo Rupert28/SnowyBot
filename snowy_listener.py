@@ -43,7 +43,7 @@ def start_notification_listener():
             'action': 'query',
             'meta': 'notifications',
             'notfilter': '!read',
-            'notlimit': 20
+            'notlimit': 50
         }
         req = site.simple_request(**params)
         data = req.submit()
@@ -60,54 +60,48 @@ def start_notification_listener():
         print("--- [SCAN FINISHED] ---\n")
         return
 
-    pages_to_process = {} 
+    all_notif_ids = [str(n.get('id')) for n in raw_notifications if n.get('id')]
+
     for n in raw_notifications:
         if n.get('type') == 'mention' and 'title' in n:
             title = n['title']['full']
             revid = n.get('revid')
-            agent = n.get('agent', {}).get('name')
-            notif_id = n.get('id')
+            user = n.get('agent', {}).get('name')
             
-            page_obj = pywikibot.Page(site, title)
-            pages_to_process[title] = (page_obj, revid, agent, notif_id)
-
-    print(f"LOG: Processing {len(pages_to_process)} unique pages...")
-
-    for title, (page, revid, user, notif_id) in pages_to_process.items():
-        try:
-            print(f"  > Checking Page: [[{title}]] (Mention by {user})")
-            
-            text = page.get(force=True)
-            matches = REMINDER_REGEX.findall(text)
-            
-            if not matches:
-                print(f"    [INFO] No templates matched Regex on this page.")
-                mark_notification_read(notif_id)
-                continue
-
-            new_count = 0
-            for match in matches:
-                time_str, msg, target_param = match
+            try:
+                print(f"  > Checking Mention: [[{title}]] (by {user})")
+                page = pywikibot.Page(site, title)
+                text = page.get(force=True)
+                matches = REMINDER_REGEX.findall(text)
                 
-                # dateparser forced to UTC
-                due_date = dateparser.parse(time_str.strip(), settings={
-                    'PREFER_DATES_FROM': 'future',
-                    'TIMEZONE': 'UTC',
-                    'TO_TIMEZONE': 'UTC',
-                    'RETURN_AS_TIMEZONE_AWARE': False
-                })
-                
-                if due_date:
-                    is_new = add_reminder_if_new(user, due_date, msg.strip(), revid, title, target_param)
-                    if is_new:
-                        print(f"    ✅ [SUCCESS] Logged to DB (Due: {due_date})")
-                        new_count += 1
-            
-            mark_notification_read(notif_id)
-            print(f"    [DONE] Finished [[{title}]]. New entries: {new_count}")
+                if not matches:
+                    print(f"    [INFO] No templates matched Regex for this mention.")
+                    continue
 
-        except Exception as e:
-            print(f"    ❌ [ERROR on {title}]: {e}")
+                new_count = 0
+                for match in matches:
+                    time_str, msg, target_param = match
+                    
+                    due_date = dateparser.parse(time_str.strip(), settings={
+                        'PREFER_DATES_FROM': 'future',
+                        'TIMEZONE': 'UTC',
+                        'TO_TIMEZONE': 'UTC',
+                        'RETURN_AS_TIMEZONE_AWARE': False
+                    })
+                    
+                    if due_date:
+                        is_new = add_reminder_if_new(user, due_date, msg.strip(), revid, title, target_param)
+                        if is_new:
+                            print(f"    ✅ [SUCCESS] Logged to DB (Due: {due_date})")
+                            new_count += 1
+                
+                print(f"    [DONE] Finished processing mention by {user}. New entries: {new_count}")
+
+            except Exception as e:
+                print(f"    ❌ [ERROR on {title}]: {e}")
+
+    if all_notif_ids:
+        mark_notification_read("|".join(all_notif_ids))
 
     print(f"--- [SCAN FINISHED] ---\n")
 
