@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "snowybot"
+version = "1.0.0"
+description = "A reminder bot for Wikipedia"
+requires-python = ">=3.9"
+dependencies = [
+    "pywikibot>=11.2.0",
+    "requests-oauthlib>=2.0.0",
+    "mwparserfromhell>=0.7.2",
+    "dateparser>=1.2.0",
+    "pytz",
+    "python-dateutil"
+]
+
+[tool.setuptools]
+py-modules = [
+    "snowy_reminder",
+    "snowy_listener",
+    "snowy_core",
+    "inspect_db"
+]
