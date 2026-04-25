@@ -1,7 +1,7 @@
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv as _load_dotenv
 
-load_dotenv()
+_load_dotenv()
 
 if 'usernames' not in globals():
     usernames = {}
@@ -11,6 +11,8 @@ if 'authenticate' not in globals():
 family = 'wikipedia'
 mylang = 'en'
 
+
+
 usernames['wikipedia']['en'] = os.getenv('PWB_USERNAME')
 
 authenticate['en.wikipedia.org'] = (
@@ -19,3 +21,5 @@ authenticate['en.wikipedia.org'] = (
     os.getenv('PWB_ACCESS_TOKEN'),
     os.getenv('PWB_ACCESS_SECRET')
 )
+
+user_agent_description = 'SnowyBot (en:User:SnowyBot) local-dev'
