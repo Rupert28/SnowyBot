@@ -90,6 +90,12 @@ def main():
     gen = pagegenerators.SearchPageGenerator(search_query, site=SITE)
     
     for page in pagegenerators.PreloadingGenerator(gen, groupsize=50):
+        #Exclusion compliance
+        if not page.botMayEdit():
+            print(f"\nSkipping {page.title()}: Bot exclusion template found.")
+            continue
+        
+        
         print(f"\nChecking: {page.title()}")
         updated_text = process_page(page)
         
