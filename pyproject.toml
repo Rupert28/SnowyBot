@@ -9,12 +9,10 @@ description = "A reminder bot for Wikipedia"
 requires-python = ">=3.9"
 dependencies = [
     "pywikibot>=11.2.0",
-    "requests-oauthlib>=2.0.0",
+    "python-dotenv>=1.2.1",
+    "mwoauth>=0.3.7",
     "mwparserfromhell>=0.7.2",
-    "dateparser>=1.2.0",
-    "python-dotenv",
-    "pytz",
-    "python-dateutil"
+    "requests>=2.32.5",
 ]
 
 [tool.setuptools]
@@ -22,5 +20,8 @@ py-modules = [
     "snowy_reminder",
     "snowy_listener",
     "snowy_core",
-    "inspect_db"
+    "inspect_db",
+]
+packages = [
+    "legal_cleanup",
 ]
